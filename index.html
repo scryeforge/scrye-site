@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Scrye Systems — Trading Systems &amp; Software</title>
+<meta name="description" content="Scrye Systems develops positive-expectancy trading systems and software to help you achieve your objectives." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --bg: #0C0F14;
+    --bg-alt: #12161E;
+    --bg-elev: #1A1F29;
+    --fg: #E8E2D4;
+    --fg-dim: #B2AD9F;
+    --fg-muted: #6F6B60;
+    --accent: #D4A34A;
+    --accent-dim: #8A6D30;
+    --line: rgba(232, 226, 212, 0.10);
+    --line-strong: rgba(232, 226, 212, 0.22);
+    --glow: rgba(212, 163, 74, 0.15);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: 'Instrument Sans', system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* Subtle grain overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 100;
+    opacity: 0.35;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.91 0 0 0 0 0.89 0 0 0 0 0.83 0 0 0 0.08 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    mix-blend-mode: overlay;
+  }
+
+  .container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  /* ===== HEADER / NAV ===== */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(12, 15, 20, 0.82);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 0;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    text-decoration: none;
+    color: var(--fg);
+  }
+
+  .brand-mark {
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+  }
+
+  .brand-name {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 1.35rem;
+    letter-spacing: 0.01em;
+    font-variation-settings: "SOFT" 30;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 2.25rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: var(--fg-dim);
+    text-decoration: none;
+    font-size: 0.9rem;
+    letter-spacing: 0.02em;
+    transition: color 0.2s ease;
+  }
+
+  .nav-links a:hover { color: var(--fg); }
+
+  .nav-cta {
+    padding: 0.55rem 1.1rem;
+    border: 1px solid var(--line-strong);
+    border-radius: 2px;
+    font-size: 0.85rem;
+    letter-spacing: 0.04em;
+    color: var(--fg) !important;
+    transition: all 0.25s ease;
+  }
+
+  .nav-cta:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--bg) !important;
+  }
+
+  @media (max-width: 720px) {
+    .nav-links li:not(:last-child) { display: none; }
+  }
+
+  /* ===== HERO ===== */
+  .hero {
+    position: relative;
+    padding: 7rem 0 6rem;
+    overflow: hidden;
+  }
+
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  @media (max-width: 900px) {
+    .hero-grid { grid-template-columns: 1fr; gap: 3rem; }
+  }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    color: var(--accent);
+    margin-bottom: 1.75rem;
+  }
+
+  .eyebrow::before {
+    content: '';
+    width: 24px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  .hero h1 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(2.5rem, 6vw, 4.75rem);
+    font-weight: 400;
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.75rem;
+    font-variation-settings: "opsz" 144, "SOFT" 20;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--accent);
+    font-variation-settings: "opsz" 144, "SOFT" 100;
+  }
+
+  .hero-lede {
+    font-size: 1.15rem;
+    color: var(--fg-dim);
+    max-width: 52ch;
+    margin-bottom: 2.5rem;
+    line-height: 1.55;
+  }
+
+  .btn-row { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.95rem 1.6rem;
+    font-size: 0.9rem;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    border-radius: 2px;
+    transition: all 0.25s ease;
+    cursor: pointer;
+    border: none;
+    font-family: inherit;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: var(--bg);
+    font-weight: 500;
+  }
+
+  .btn-primary:hover {
+    background: var(--fg);
+    transform: translateY(-1px);
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--fg);
+    border: 1px solid var(--line-strong);
+  }
+
+  .btn-ghost:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  /* Hero visual — the basin / scrying bowl */
+  .hero-visual {
+    position: relative;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .basin {
+    width: 100%;
+    height: 100%;
+    animation: drift 18s ease-in-out infinite;
+  }
+
+  @keyframes drift {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-8px) rotate(0.5deg); }
+  }
+
+  /* ===== TICKER STRIP ===== */
+  .ticker {
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 1rem 0;
+    overflow: hidden;
+    background: var(--bg-alt);
+  }
+
+  .ticker-track {
+    display: flex;
+    gap: 3rem;
+    white-space: nowrap;
+    animation: scroll 40s linear infinite;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    color: var(--fg-muted);
+  }
+
+  .ticker-track span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+
+  .ticker-track strong {
+    color: var(--fg);
+    font-weight: 500;
+  }
+
+  .ticker-track .up { color: #7BA876; }
+  .ticker-track .dn { color: #B56B5D; }
+
+  @keyframes scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* ===== SECTIONS ===== */
+  section { padding: 6rem 0; }
+
+  .section-head {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 3rem;
+    margin-bottom: 4rem;
+    align-items: end;
+  }
+
+  @media (max-width: 780px) {
+    .section-head { grid-template-columns: 1fr; gap: 1.25rem; }
+  }
+
+  .section-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    margin-bottom: 0.5rem;
+  }
+
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    color: var(--fg-muted);
+  }
+
+  .section-title {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    line-height: 1.08;
+    font-weight: 400;
+    letter-spacing: -0.015em;
+    font-variation-settings: "opsz" 144, "SOFT" 20;
+  }
+
+  .section-title em {
+    font-style: italic;
+    color: var(--accent);
+    font-variation-settings: "opsz" 144, "SOFT" 100;
+  }
+
+  /* ===== FEATURES ===== */
+  .features {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border-top: 1px solid var(--line);
+    border-left: 1px solid var(--line);
+  }
+
+  @media (max-width: 820px) {
+    .features { grid-template-columns: 1fr; }
+  }
+
+  .feature {
+    padding: 2.25rem;
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    transition: background 0.3s ease;
+  }
+
+  .feature:hover { background: var(--bg-alt); }
+
+  .feature-icon {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 1.4rem;
+    color: var(--accent);
+    margin-bottom: 1.25rem;
+    font-variation-settings: "opsz" 144, "SOFT" 100;
+  }
+
+  .feature h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.35rem;
+    font-weight: 500;
+    margin-bottom: 0.75rem;
+    line-height: 1.25;
+  }
+
+  .feature p {
+    color: var(--fg-dim);
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  /* ===== VIDEOS LIST ===== */
+  .videos-list {
+    border-top: 1px solid var(--line);
+  }
+
+  .video-item {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 2rem;
+    align-items: center;
+    padding: 1.5rem 0;
+    border-bottom: 1px solid var(--line);
+    text-decoration: none;
+    color: var(--fg);
+    transition: padding 0.3s ease;
+  }
+
+  .video-item:hover {
+    padding-left: 1rem;
+    padding-right: -1rem;
+  }
+
+  .video-item:hover .video-title { color: var(--accent); }
+  .video-item:hover .video-arrow { transform: translateX(6px); color: var(--accent); }
+
+  .video-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    color: var(--fg-muted);
+    min-width: 3rem;
+  }
+
+  .video-title {
+    font-family: 'Fraunces', serif;
+    font-size: 1.35rem;
+    font-weight: 400;
+    transition: color 0.25s ease;
+  }
+
+  .video-arrow {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--fg-muted);
+    transition: all 0.25s ease;
+  }
+
+  /* ===== ABOUT ===== */
+  .about {
+    background: var(--bg-alt);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .about-body {
+    max-width: 68ch;
+    font-family: 'Fraunces', serif;
+    font-size: 1.45rem;
+    line-height: 1.55;
+    font-weight: 300;
+    color: var(--fg);
+    font-variation-settings: "opsz" 144, "SOFT" 30;
+  }
+
+  .about-body em {
+    font-style: italic;
+    color: var(--accent);
+    font-variation-settings: "opsz" 144, "SOFT" 100;
+  }
+
+  /* ===== CONTACT ===== */
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+  }
+
+  @media (max-width: 780px) {
+    .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+  }
+
+  .contact-card {
+    border: 1px solid var(--line);
+    padding: 2.25rem;
+  }
+
+  .contact-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--fg-muted);
+    margin-bottom: 1rem;
+  }
+
+  .contact-value {
+    font-family: 'Fraunces', serif;
+    font-size: 1.25rem;
+    color: var(--fg);
+    text-decoration: none;
+    display: block;
+    line-height: 1.4;
+  }
+
+  .contact-value:hover { color: var(--accent); }
+
+  /* ===== FOOTER ===== */
+  footer {
+    padding: 3rem 0 2rem;
+    border-top: 1px solid var(--line);
+    color: var(--fg-muted);
+    font-size: 0.85rem;
+  }
+
+  .footer-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .social {
+    display: flex;
+    gap: 1.5rem;
+    list-style: none;
+  }
+
+  .social a {
+    color: var(--fg-muted);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .social a:hover { color: var(--accent); }
+
+  /* ===== ENTRANCE ANIM ===== */
+  .fade-up {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+  }
+
+  .fade-up.d1 { animation-delay: 0.1s; }
+  .fade-up.d2 { animation-delay: 0.25s; }
+  .fade-up.d3 { animation-delay: 0.4s; }
+  .fade-up.d4 { animation-delay: 0.55s; }
+
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="container">
+    <nav class="nav">
+      <a href="#" class="brand">
+        <svg class="brand-mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="16" cy="20" rx="13" ry="5" stroke="#D4A34A" stroke-width="1.3"/>
+          <ellipse cx="16" cy="20" rx="13" ry="5" fill="#D4A34A" fill-opacity="0.08"/>
+          <path d="M5 20 Q 10 14, 16 14 T 27 20" stroke="#E8E2D4" stroke-width="1" fill="none" opacity="0.6"/>
+          <circle cx="16" cy="17" r="1.2" fill="#D4A34A"/>
+        </svg>
+        <span class="brand-name">Scrye Systems</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#systems">Systems</a></li>
+        <li><a href="#videos">Videos</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact" class="nav-cta">Schedule a demo</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-grid">
+      <div>
+        <div class="eyebrow fade-up">Systems Development · Since 2023</div>
+        <h1 class="fade-up d1">
+          Trading systems, built to <em>see</em> what the market is doing.
+        </h1>
+        <p class="hero-lede fade-up d2">
+          Scrye Systems develops positive-expectancy trading strategies and custom software for discretionary and systematic traders across every major market.
+        </p>
+        <div class="btn-row fade-up d3">
+          <a href="#contact" class="btn btn-primary">Schedule a demo →</a>
+          <a href="#videos" class="btn btn-ghost">Watch the series</a>
+        </div>
+      </div>
+
+      <div class="hero-visual fade-up d4">
+        <!-- Scrying basin illustration -->
+        <svg class="basin" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="bowl" cx="50%" cy="45%" r="55%">
+              <stop offset="0%" stop-color="#1A1F29"/>
+              <stop offset="60%" stop-color="#0C0F14"/>
+              <stop offset="100%" stop-color="#000"/>
+            </radialGradient>
+            <radialGradient id="shimmer" cx="50%" cy="45%" r="40%">
+              <stop offset="0%" stop-color="#D4A34A" stop-opacity="0.35"/>
+              <stop offset="60%" stop-color="#D4A34A" stop-opacity="0.05"/>
+              <stop offset="100%" stop-color="#D4A34A" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+
+          <!-- outer rim -->
+          <ellipse cx="200" cy="280" rx="180" ry="55" fill="none" stroke="#D4A34A" stroke-width="1.2" opacity="0.7"/>
+          <ellipse cx="200" cy="280" rx="170" ry="48" fill="none" stroke="#D4A34A" stroke-width="0.6" opacity="0.35"/>
+
+          <!-- basin body -->
+          <path d="M 20 280 Q 20 360, 200 370 Q 380 360, 380 280" fill="#0C0F14" stroke="#D4A34A" stroke-width="1.2" opacity="0.7"/>
+
+          <!-- bowl interior with glow -->
+          <ellipse cx="200" cy="280" rx="168" ry="48" fill="url(#bowl)"/>
+          <ellipse cx="200" cy="275" rx="120" ry="32" fill="url(#shimmer)"/>
+
+          <!-- ripples / chart lines inside -->
+          <g opacity="0.55">
+            <path d="M 90 285 Q 140 275, 180 282 T 260 278 T 310 285" stroke="#D4A34A" stroke-width="0.8" fill="none"/>
+            <path d="M 100 292 Q 150 286, 190 290 T 270 287 T 305 292" stroke="#E8E2D4" stroke-width="0.5" fill="none" opacity="0.5"/>
+            <path d="M 110 298 Q 160 294, 200 297 T 280 296" stroke="#E8E2D4" stroke-width="0.4" fill="none" opacity="0.3"/>
+          </g>
+
+          <!-- small floating motes above -->
+          <circle cx="175" cy="255" r="1.4" fill="#D4A34A" opacity="0.8"/>
+          <circle cx="220" cy="245" r="1" fill="#D4A34A" opacity="0.6"/>
+          <circle cx="250" cy="260" r="1.2" fill="#E8E2D4" opacity="0.5"/>
+          <circle cx="155" cy="265" r="0.8" fill="#E8E2D4" opacity="0.4"/>
+
+          <!-- pedestal -->
+          <rect x="180" y="365" width="40" height="12" fill="#0C0F14" stroke="#D4A34A" stroke-width="0.8" opacity="0.5"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-track">
+    <span><strong>ES</strong> 5,842.25 <em class="up">+0.42%</em></span>
+    <span><strong>NQ</strong> 20,471.00 <em class="dn">−0.18%</em></span>
+    <span><strong>CL</strong> 72.40 <em class="up">+1.21%</em></span>
+    <span><strong>GC</strong> 2,684.30 <em class="up">+0.55%</em></span>
+    <span><strong>ZB</strong> 117'08 <em class="dn">−0.07%</em></span>
+    <span><strong>6E</strong> 1.0842 <em class="up">+0.11%</em></span>
+    <span><strong>BTC</strong> 98,320 <em class="up">+2.04%</em></span>
+    <span><strong>VX</strong> 15.88 <em class="dn">−1.44%</em></span>
+    <!-- duplicated for seamless scroll -->
+    <span><strong>ES</strong> 5,842.25 <em class="up">+0.42%</em></span>
+    <span><strong>NQ</strong> 20,471.00 <em class="dn">−0.18%</em></span>
+    <span><strong>CL</strong> 72.40 <em class="up">+1.21%</em></span>
+    <span><strong>GC</strong> 2,684.30 <em class="up">+0.55%</em></span>
+    <span><strong>ZB</strong> 117'08 <em class="dn">−0.07%</em></span>
+    <span><strong>6E</strong> 1.0842 <em class="up">+0.11%</em></span>
+    <span><strong>BTC</strong> 98,320 <em class="up">+2.04%</em></span>
+    <span><strong>VX</strong> 15.88 <em class="dn">−1.44%</em></span>
+  </div>
+</div>
+
+<!-- SYSTEMS / FEATURES -->
+<section id="systems">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <div class="section-num">01 / SYSTEMS</div>
+        <div class="section-label">What we build</div>
+      </div>
+      <h2 class="section-title">
+        Strategies designed to meet your <em>objectives</em> — not the other way around.
+      </h2>
+    </div>
+
+    <div class="features">
+      <div class="feature">
+        <div class="feature-icon">ƒ</div>
+        <h3>Positive-Expectancy Design</h3>
+        <p>Every system is built and validated around edge, risk, and repeatable statistical behavior — no hand-waving, no overfitting.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">◈</div>
+        <h3>Beautifully Designed Patterns</h3>
+        <p>Clean rule-sets and pattern logic you can actually understand, audit, and trust under live conditions.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">⟡</div>
+        <h3>Easy to Use</h3>
+        <p>Delivered with clear documentation and support so you can deploy without a PhD in quantitative finance.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">◉</div>
+        <h3>All Major Markets</h3>
+        <p>Futures, equities, FX, and crypto — strategies tuned to the structure of each market, not copy-pasted.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">⟢</div>
+        <h3>Custom Software</h3>
+        <p>Need something specific? We build bespoke tools, dashboards, and integrations around your workflow.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">✦</div>
+        <h3>Ongoing Research</h3>
+        <p>Markets change. Our research program keeps systems current and surfaces new opportunities as conditions shift.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VIDEOS -->
+<section id="videos" style="background: var(--bg-alt); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <div class="section-num">02 / SERIES</div>
+        <div class="section-label">System Fit</div>
+      </div>
+      <h2 class="section-title">
+        A six-part series on finding the system that <em>fits you</em>.
+      </h2>
+    </div>
+
+    <div class="videos-list">
+      <a href="#" class="video-item">
+        <span class="video-num">PART 01</span>
+        <span class="video-title">Why most traders fail before they start</span>
+        <span class="video-arrow">→ 12:24</span>
+      </a>
+      <a href="#" class="video-item">
+        <span class="video-num">PART 02</span>
+        <span class="video-title">Defining your trading objectives</span>
+        <span class="video-arrow">→ 14:08</span>
+      </a>
+      <a href="#" class="video-item">
+        <span class="video-num">PART 03</span>
+        <span class="video-title">Matching systems to personality</span>
+        <span class="video-arrow">→ 11:45</span>
+      </a>
+      <a href="#" class="video-item">
+        <span class="video-num">PART 04</span>
+        <span class="video-title">Measuring edge honestly</span>
+        <span class="video-arrow">→ 15:31</span>
+      </a>
+      <a href="#" class="video-item">
+        <span class="video-num">PART 05</span>
+        <span class="video-title">Position sizing &amp; risk framework</span>
+        <span class="video-arrow">→ 13:12</span>
+      </a>
+      <a href="#" class="video-item">
+        <span class="video-num">PART 06</span>
+        <span class="video-title">Deploying and monitoring in live markets</span>
+        <span class="video-arrow">→ 16:57</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="about">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <div class="section-num">03 / ABOUT</div>
+        <div class="section-label">The firm</div>
+      </div>
+      <h2 class="section-title">
+        A systems development firm focused on <em>edge</em>.
+      </h2>
+    </div>
+
+    <p class="about-body">
+      Scrye Systems is a <em>systems development firm</em> that focuses on positive-expectancy trading systems for all markets. We believe the best strategies are the ones you actually understand — transparent in their logic, honest about their risk, and built around the way you actually want to trade.
+    </p>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <div class="section-num">04 / CONTACT</div>
+        <div class="section-label">Get in touch</div>
+      </div>
+      <h2 class="section-title">
+        Let's talk about what you're <em>trying to build</em>.
+      </h2>
+    </div>
+
+    <div class="contact-grid">
+      <div class="contact-card">
+        <div class="contact-label">Office</div>
+        <span class="contact-value">
+          104 Newell Ave<br/>
+          Needham, MA 02492
+        </span>
+      </div>
+      <div class="contact-card">
+        <div class="contact-label">Email</div>
+        <a href="mailto:info@scryesystems.com" class="contact-value">info@scryesystems.com</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-row">
+      <div>© 2026 Scrye Systems. All rights reserved.</div>
+      <ul class="social">
+        <li><a href="#">LinkedIn</a></li>
+        <li><a href="#">Twitter</a></li>
+        <li><a href="#">YouTube</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
